@@ -6,9 +6,7 @@ public class defs {
 
     public static String[] USER_COLORS = { "#DAAFEA", "#9ADDB6", "#9AE0F7", "#BDB8FF", "#F6B880", "#FFDF7E" };
 
-    public static String SHARED_PREF = "SHARED_PREFS";
-
-    public static int PRESSED_BACK = 2;
+    public static String SHARED_PREF = "SHARED_PREFS_CHOREAPP";
 
     public static String IS_LOGGED_IN = "IS_LOGGED_IN";
 }

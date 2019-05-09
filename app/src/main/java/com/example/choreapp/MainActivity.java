@@ -19,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +31,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -155,35 +157,40 @@ public class MainActivity extends AppCompatActivity {
         String google_id = user.getUid();
 
         db.collection(User.COLLECTION)
-            .document(google_id)
+            .whereEqualTo(User.GOOGLE_ID, google_id)
+            .limit(1)
             .get()
-            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    showProgress(false);
-                    UserHolder.getInstance().setUser(
-                        documentSnapshot,
-                        getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE)
-                    );
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (!task.isSuccessful()) {
+                        saveUser(user);
+                        return;
+                    }
 
-                    if (documentSnapshot.get(User.COLOR) == null) {
+                    QuerySnapshot queryDocumentSnapshots = task.getResult();
+                    if (queryDocumentSnapshots == null || queryDocumentSnapshots.getDocuments().isEmpty()) {
+                        saveUser(user);
+                        return;
+                    }
+
+                    DocumentSnapshot userQuery = queryDocumentSnapshots.getDocuments().get(0);
+
+                    showProgress(false);
+                    DataHolder.getInstance().setUser(userQuery, getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE));
+
+                    if (userQuery.get(User.COLOR) == null) {
                         startCreateProfile(user.getDisplayName());
                         return;
                     }
 
                     getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE).edit()
-                        .putBoolean(defs.IS_LOGGED_IN, true)
-                        .apply();
+                            .putBoolean(defs.IS_LOGGED_IN, true)
+                            .apply();
 
                     Intent intent = new Intent(MainActivity.this, GroupsActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    saveUser(user);
                 }
             });
     }
@@ -200,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         showProgress(false);
-                        UserHolder.getInstance().setUser(documentReference, getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE));
+                        DataHolder.getInstance().setUser(documentReference, getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE));
                         startCreateProfile(name);
                     }
                 })

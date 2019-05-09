@@ -2,6 +2,7 @@ package com.example.choreapp.models;
 
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +10,17 @@ import java.util.Map;
 public class Group {
 
     public static String COLLECTION = "groups";
+    public static String NAME = "name";
+    public static String USERS = "users";
+    public static String TASKS = "tasks";
+    public static String ACTIVITIES = "activities";
+    public static String MESSAGES = "messages";
 
     String name;
-    List<DocumentReference> users;
-    List<DocumentReference> tasks;
-    List<DocumentReference> activities;
-    List<DocumentReference> messages;
+    public List<DocumentReference> users = new ArrayList<>();
+    public List<DocumentReference> tasks = new ArrayList<>();
+    public List<DocumentReference> activities = new ArrayList<>();
+    public List<DocumentReference> messages = new ArrayList<>();
 
     public Group(String name) {
         this.name = name;

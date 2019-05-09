@@ -3,6 +3,7 @@ package com.example.choreapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -135,7 +136,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         showProgress(true);
 
-        DocumentReference user = UserHolder.getInstance().getUserRef();
+        DocumentReference user = DataHolder.getInstance().getUser().getReference();
         user.update(
                 User.NAME, name,
                 User.COLOR, defs.USER_COLORS[selectedColor])
@@ -143,17 +144,15 @@ public class CreateProfileActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     showProgress(false);
+
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(CreateProfileActivity.this, "Server error", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     startCreateGroup();
                 }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    showProgress(false);
-                    Toast.makeText(CreateProfileActivity.this, "Server error", Toast.LENGTH_SHORT).show();
-                }
             });
-
     }
 
     public void showProgress(final boolean show) {
@@ -182,6 +181,11 @@ public class CreateProfileActivity extends AppCompatActivity {
     }
 
     private void startCreateGroup() {
+        getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE)
+            .edit()
+            .putBoolean(defs.IS_LOGGED_IN, true)
+            .apply();
+
         Intent intent = new Intent(this, CreateGroupActivity.class);
         startActivity(intent);
     }
