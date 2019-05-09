@@ -9,6 +9,10 @@ import java.util.Map;
 public class User {
 
     public static String COLLECTION = "users";
+    public static String USER_ID = "user_id";
+
+    public static String NAME = "name";
+    public static String COLOR = "color";
 
     String name;
     String google_id;

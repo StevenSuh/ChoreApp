@@ -38,6 +38,7 @@
             android:layout_gravity="center"
             android:background="@drawable/button">
             <LinearLayout
+                android:id="@+id/signin_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -59,9 +60,18 @@
                     android:layout_height="20.625dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="7dp"
-                    android:layout_marginRight="5dp"
                     android:src="@drawable/google" />
             </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/signin_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_centerHorizontal="true"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/progress_dark"
+                android:visibility="invisible" />
+
         </RelativeLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
