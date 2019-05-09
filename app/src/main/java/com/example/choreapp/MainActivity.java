@@ -19,7 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -29,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
@@ -69,7 +69,33 @@ public class MainActivity extends AppCompatActivity {
         signinProgressView = findViewById(R.id.signin_progress);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != RC_SIGN_IN) {
+            onFail();
+            return;
+        }
+
+        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        try {
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+            if (account == null) {
+                onFail();
+                return;
+            }
+
+            firebaseAuthWithGoogle(account);
+        } catch (ApiException e) {
+            onFail();
+        }
+    }
+
     private void signinWithGoogle() {
+        if (isSigningin) {
+            return;
+        }
+
         showProgress(true);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -101,67 +127,14 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode != RC_SIGN_IN) {
-            onFail();
-            return;
-        }
-
-        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-        try {
-            // Google Sign In was successful, authenticate with Firebase
-            GoogleSignInAccount account = task.getResult(ApiException.class);
-
-            if (account == null) {
-                onFail();
-                return;
-            }
-
-            firebaseAuthWithGoogle(account);
-        } catch (ApiException e) {
-            onFail();
-        }
-    }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        saveUser(user);
-                        return;
-                    }
-                    onFail();
-                }
-            });
-    }
-
-    private void saveUser(FirebaseUser user) {
-        if (user == null) {
-            onFail();
-            return;
-        }
-
-        final String name = user.getDisplayName();
-        String google_id = user.getUid();
-
-        User newUser = new User(name, google_id);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(User.COLLECTION)
-            .add(newUser.toMap())
-            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    showProgress(false);
-                    UserHolder.getInstance().setUser(documentReference, getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE));
-                    startCreateProfile(name);
+                public void onSuccess(AuthResult authResult) {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    checkUser(user);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -170,6 +143,73 @@ public class MainActivity extends AppCompatActivity {
                     onFail();
                 }
             });
+    }
+
+    private void checkUser(final FirebaseUser user) {
+        if (user == null) {
+            onFail();
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String google_id = user.getUid();
+
+        db.collection(User.COLLECTION)
+            .document(google_id)
+            .get()
+            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    showProgress(false);
+                    UserHolder.getInstance().setUser(
+                        documentSnapshot,
+                        getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE)
+                    );
+
+                    if (documentSnapshot.get(User.COLOR) == null) {
+                        startCreateProfile(user.getDisplayName());
+                        return;
+                    }
+
+                    getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE).edit()
+                        .putBoolean(defs.IS_LOGGED_IN, true)
+                        .apply();
+
+                    Intent intent = new Intent(MainActivity.this, GroupsActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    saveUser(user);
+                }
+            });
+    }
+
+    private void saveUser(FirebaseUser user) {
+        final String name = user.getDisplayName();
+        String google_id = user.getUid();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        User newUser = new User(name, google_id);
+        db.collection(User.COLLECTION)
+                .add(newUser.toMap())
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        showProgress(false);
+                        UserHolder.getInstance().setUser(documentReference, getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE));
+                        startCreateProfile(name);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onFail();
+                    }
+                });
     }
 
     public void onFail() {

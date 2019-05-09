@@ -43,6 +43,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 finish();
             }
         });
@@ -134,7 +135,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         showProgress(true);
 
-        DocumentReference user = UserHolder.getInstance().getUser();
+        DocumentReference user = UserHolder.getInstance().getUserRef();
         user.update(
                 User.NAME, name,
                 User.COLOR, defs.USER_COLORS[selectedColor])

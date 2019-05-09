@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateGroupActivity"></activity>
+        <activity android:name=".GroupsActivity"
+            android:theme="@style/AppTheme_NoTransition"/>
+        <activity android:name=".CreateGroupActivity" />
         <activity android:name=".CreateProfileActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -11,14 +11,19 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 public class UserHolder {
 
-    private DocumentReference user = null;
+    private DocumentReference userRef = null;
+    private DocumentSnapshot userSnapshot = null;
 
-    public DocumentReference getUser() {
-        return user;
+    public DocumentReference getUserRef() {
+        return userRef;
+    }
+
+    public DocumentSnapshot getUserSnapshot() {
+        return userSnapshot;
     }
 
     public void setUser(DocumentReference user, final SharedPreferences prefs) {
-        this.user = user;
+        this.userRef = user;
 
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -32,6 +37,7 @@ public class UserHolder {
                     return;
                 }
 
+                userSnapshot = user;
                 prefs.edit()
                     .putString(User.USER_ID, user.getId())
                     .apply();
@@ -39,8 +45,21 @@ public class UserHolder {
         });
     }
 
-    public boolean hasUser() {
-        return user != null;
+    public void setUser(DocumentSnapshot user, SharedPreferences prefs) {
+        this.userSnapshot = user;
+        this.userRef = user.getReference();
+
+        prefs.edit()
+            .putString(User.USER_ID, user.getId())
+            .apply();
+    }
+
+    public boolean hasUserRef() {
+        return userRef != null;
+    }
+
+    public boolean hasUserSnapshot() {
+        return userSnapshot != null;
     }
 
     private static final UserHolder userHolder = new UserHolder();
