@@ -1,9 +1,8 @@
-package com.example.choreapp;
+package com.example.choreapp.signup;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,9 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.choreapp.DataHolder;
+import com.example.choreapp.R;
+import com.example.choreapp.Utils;
+import com.example.choreapp.defs;
 import com.example.choreapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 

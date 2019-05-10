@@ -1,4 +1,4 @@
-package com.example.choreapp;
+package com.example.choreapp.signup;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -15,6 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.choreapp.DataHolder;
+import com.example.choreapp.main.GroupsActivity;
+import com.example.choreapp.R;
+import com.example.choreapp.Utils;
 import com.example.choreapp.models.Group;
 import com.example.choreapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;

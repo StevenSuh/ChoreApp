@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:id="@+id/toolbar_actionbar"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginEnd="18dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:id="@+id/home_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_users" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/circular_pro_medium"
+                    android:text="Groups"
+                    android:textColor="@color/colorBlackLight" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rent_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_list" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/circular_pro_medium"
+                    android:text="Tasks"
+                    android:textColor="@color/colorBlackLight" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/return_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_message" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/circular_pro_medium"
+                    android:text="Messages"
+                    android:textColor="@color/colorBlackLight" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/account_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_settings" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/circular_pro_medium"
+                    android:text="Settings"
+                    android:textColor="@color/colorBlackLight" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.Toolbar>

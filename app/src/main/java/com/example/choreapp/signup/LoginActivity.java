@@ -1,8 +1,9 @@
-package com.example.choreapp;
+package com.example.choreapp.signup;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.choreapp.DataHolder;
+import com.example.choreapp.main.GroupsActivity;
+import com.example.choreapp.R;
+import com.example.choreapp.Utils;
+import com.example.choreapp.defs;
 import com.example.choreapp.models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,7 +39,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private boolean isSigningin = false;
     private LinearLayout signinTextView;
@@ -48,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences prefs = getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE);
+        boolean isLoggedIn = prefs.getBoolean(defs.IS_LOGGED_IN, false);
+
+        if (isLoggedIn) {
+            finish();
+            startActivity(new Intent(this, GroupsActivity.class));
+            return;
+        }
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -188,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                             .putBoolean(defs.IS_LOGGED_IN, true)
                             .apply();
 
-                    Intent intent = new Intent(MainActivity.this, GroupsActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, GroupsActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
