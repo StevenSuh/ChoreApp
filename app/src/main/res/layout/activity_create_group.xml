@@ -21,7 +21,8 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="3dp"
-            android:src="@drawable/arrow_left" />
+            android:rotation="180"
+            android:src="@drawable/ic_chevron_left" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,10 +66,9 @@
             <ImageView
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:layout_marginTop="4dp"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/home_icon"/>
+                android:src="@drawable/home"/>
 
             <EditText
                 android:id="@+id/create_group_name"
@@ -79,8 +79,8 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:fontFamily="@font/circular_pro_medium"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="18sp"
                 android:textAllCaps="true" />
 
         </LinearLayout>
@@ -106,10 +106,9 @@
             <ImageView
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:layout_marginTop="4dp"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/link_icon"/>
+                android:src="@drawable/link"/>
 
             <EditText
                 android:id="@+id/create_group_link"
@@ -120,8 +119,8 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:fontFamily="@font/circular_pro_medium"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="18sp"
                 android:textAllCaps="true" />
 
         </LinearLayout>

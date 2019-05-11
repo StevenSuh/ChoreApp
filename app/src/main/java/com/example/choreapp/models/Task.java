@@ -9,14 +9,26 @@ public class Task {
 
     public static String COLLECTION = "tasks";
 
-    String name;
-    int points;
-    DocumentReference assigned_user;
-    String reassign_interval;
-    boolean is_done;
-    DocumentReference group;
+    public static String NAME = "name";
+    public static String POINTS = "points";
+    public static String ASSIGNED_USER = "assigned_user";
+    public static String REASSIGN_INTERVAL = "reassign_interval";
+    public static String IS_DONE = "is_done";
+    public static String GROUP = "group";
 
-    public Task(String name, int points, DocumentReference assigned_user, String reassign_interval, boolean is_done, DocumentReference group) {
+    public String name;
+    public long points;
+    public DocumentReference assigned_user;
+    public String reassign_interval;
+    public boolean is_done;
+    public DocumentReference group;
+
+    public Task(String name,
+                long points,
+                DocumentReference assigned_user,
+                String reassign_interval,
+                boolean is_done,
+                DocumentReference group) {
         this.name = name;
         this.points = points;
         this.assigned_user = assigned_user;

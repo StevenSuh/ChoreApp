@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.choreapp.DataHolder;
+import com.example.choreapp.defs;
 import com.example.choreapp.main.GroupsActivity;
 import com.example.choreapp.R;
 import com.example.choreapp.Utils;
@@ -46,7 +47,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_group);
 
         LinearLayout backButton = findViewById(R.id.back);
-        Utils.setTouchEffect(backButton, true);
+        Utils.setTouchEffect(backButton, true, false);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +72,11 @@ public class CreateGroupActivity extends AppCompatActivity {
 
     public void executeCreateGroup() {
         if (isCreating) {
+            return;
+        }
+
+        if (!Utils.isNetworkAvailable(this)) {
+            Toast.makeText(this, "No internet", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -173,6 +179,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             userGroups = new ArrayList<>();
         }
         userGroups.add(group);
+        DataHolder.getInstance().setGroup(group, getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE));
 
         user.getReference()
             .update(User.GROUPS, userGroups)
@@ -186,7 +193,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     showProgress(false);
 
                     Intent intent = new Intent(CreateGroupActivity.this, GroupsActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
             });

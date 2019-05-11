@@ -12,15 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main.SettingsActivity"
+        <activity
+            android:name=".main.AccountActivity"
             android:theme="@style/AppTheme_NoTransition" />
-        <activity android:name=".main.MessagesActivity"
+        <activity
+            android:name=".main.tasks.TaskDetailsActivity"
             android:theme="@style/AppTheme_NoTransition" />
-        <activity android:name=".main.TasksActivity"
+        <activity
+            android:name=".main.MessagesActivity"
+            android:theme="@style/AppTheme_NoTransition" />
+        <activity
+            android:name=".main.tasks.TasksActivity"
             android:theme="@style/AppTheme_NoTransition" />
         <activity
             android:name=".main.GroupsActivity"
-            android:theme="@style/AppTheme_NoTransition_Initial" />
+            android:theme="@style/AppTheme_NoTransition" />
         <activity android:name=".signup.CreateGroupActivity" />
         <activity android:name=".signup.CreateProfileActivity" />
         <activity android:name=".signup.LoginActivity">

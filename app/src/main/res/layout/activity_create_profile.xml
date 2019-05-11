@@ -21,7 +21,8 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="3dp"
-            android:src="@drawable/arrow_left" />
+            android:rotation="180"
+            android:src="@drawable/ic_chevron_left" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,12 +80,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-                <Button
+                <View
                     android:id="@+id/color_one"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_centerHorizontal="true"
-                    style="?android:attr/borderlessButtonStyle"
                     android:background="@drawable/color_one" />
             </RelativeLayout>
 
@@ -92,12 +92,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-                <Button
+                <View
                     android:id="@+id/color_two"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_centerHorizontal="true"
-                    style="?android:attr/borderlessButtonStyle"
                     android:background="@drawable/color_two" />
             </RelativeLayout>
 
@@ -105,12 +104,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-                <Button
+                <View
                     android:id="@+id/color_three"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_centerHorizontal="true"
-                    style="?android:attr/borderlessButtonStyle"
                     android:background="@drawable/color_three" />
             </RelativeLayout>
 
@@ -118,12 +116,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-                <Button
+                <View
                     android:id="@+id/color_four"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_centerHorizontal="true"
-                    style="?android:attr/borderlessButtonStyle"
                     android:background="@drawable/color_four" />
             </RelativeLayout>
 
@@ -131,12 +128,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-                <Button
+                <View
                     android:id="@+id/color_five"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_centerHorizontal="true"
-                    style="?android:attr/borderlessButtonStyle"
                     android:background="@drawable/color_five" />
             </RelativeLayout>
 
@@ -144,12 +140,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
-                <Button
+                <View
                     android:id="@+id/color_six"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_centerHorizontal="true"
-                    style="?android:attr/borderlessButtonStyle"
                     android:background="@drawable/color_six" />
             </RelativeLayout>
 
@@ -166,10 +161,9 @@
             <ImageView
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:layout_marginTop="4dp"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/user_icon"/>
+                android:src="@drawable/user"/>
 
             <EditText
                 android:id="@+id/create_name"
@@ -180,8 +174,8 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:fontFamily="@font/circular_pro_medium"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="18sp"
                 android:textAllCaps="true" />
 
         </LinearLayout>

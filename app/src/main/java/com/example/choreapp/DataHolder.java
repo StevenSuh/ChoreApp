@@ -3,6 +3,7 @@ package com.example.choreapp;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+import com.example.choreapp.models.Group;
 import com.example.choreapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -12,11 +13,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+// Acts as a cache
 public class DataHolder {
 
     private DocumentSnapshot user = null;
-
-    private List<DocumentSnapshot> groups = new ArrayList<>();
+    private DocumentSnapshot currentGroup = null;
 
     public DocumentSnapshot getUser() {
         return user;
@@ -42,10 +43,39 @@ public class DataHolder {
 
     public void setUser(DocumentSnapshot user, SharedPreferences prefs) {
         this.user = user;
-        this.groups = new ArrayList<>();
 
         prefs.edit()
             .putString(User.USER_ID, user.getId())
+            .apply();
+    }
+
+    public DocumentSnapshot getGroup() {
+        return currentGroup;
+    }
+
+    public void setGroup(DocumentReference group, final SharedPreferences prefs) {
+        group.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    return;
+                }
+
+                DocumentSnapshot group = task.getResult();
+                if (group == null) {
+                    return;
+                }
+
+                DataHolder.getInstance().setGroup(group, prefs);
+            }
+        });
+    }
+
+    public void setGroup(DocumentSnapshot group, SharedPreferences prefs) {
+        this.currentGroup = group;
+
+        prefs.edit()
+            .putString(Group.GROUP_ID, group.getId())
             .apply();
     }
 
@@ -53,12 +83,8 @@ public class DataHolder {
         return user != null;
     }
 
-    public boolean hasGroups() {
-        return !groups.isEmpty();
-    }
-
-    public void addGroup(DocumentSnapshot group) {
-        groups.add(group);
+    public boolean hasGroup() {
+        return currentGroup != null;
     }
 
     private static final DataHolder dataHolder = new DataHolder();

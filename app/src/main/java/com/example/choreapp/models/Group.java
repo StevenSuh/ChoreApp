@@ -10,6 +10,7 @@ import java.util.Map;
 public class Group {
 
     public static String COLLECTION = "groups";
+    public static String GROUP_ID = "group_id";
     public static String NAME = "name";
     public static String USERS = "users";
     public static String TASKS = "tasks";

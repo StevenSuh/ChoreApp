@@ -50,6 +50,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="3dp"
                     android:layout_marginStart="3dp"
+                    android:layout_marginTop="1dp"
                     android:fontFamily="@font/circular_pro_bold"
                     android:text="Sign in with "
                     android:textSize="16sp"

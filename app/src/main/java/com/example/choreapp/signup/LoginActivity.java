@@ -59,8 +59,8 @@ public class LoginActivity extends AppCompatActivity {
         boolean isLoggedIn = prefs.getBoolean(defs.IS_LOGGED_IN, false);
 
         if (isLoggedIn) {
-            finish();
             startActivity(new Intent(this, GroupsActivity.class));
+            finish();
             return;
         }
 
@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         RelativeLayout signinButton = findViewById(R.id.sign_in_button);
-        Utils.setTouchEffect(signinButton, true);
+        Utils.setTouchEffect(signinButton, true, false);
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +110,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signinWithGoogle() {
         if (isSigningin) {
+            return;
+        }
+
+        if (!Utils.isNetworkAvailable(this)) {
+            Toast.makeText(this, "No internet", Toast.LENGTH_LONG).show();
             return;
         }
 

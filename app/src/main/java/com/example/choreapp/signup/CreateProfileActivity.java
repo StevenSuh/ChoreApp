@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -30,7 +29,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     private boolean isCreating = false;
 
     private int selectedColor = -1;
-    private Button selectedColorButton = null;
+    private View selectedColorButton = null;
     private EditText nameView;
 
     private TextView nextTextView;
@@ -42,7 +41,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_profile);
 
         LinearLayout backButton = findViewById(R.id.back);
-        Utils.setTouchEffect(backButton, true);
+        Utils.setTouchEffect(backButton, true, false);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,26 +50,26 @@ public class CreateProfileActivity extends AppCompatActivity {
             }
         });
 
-        Button colorOne = findViewById(R.id.color_one);
-        Button colorTwo= findViewById(R.id.color_two);
-        Button colorThree = findViewById(R.id.color_three);
-        Button colorFour = findViewById(R.id.color_four);
-        Button colorFive = findViewById(R.id.color_five);
-        Button colorSix = findViewById(R.id.color_six);
+        View colorOne = findViewById(R.id.color_one);
+        View colorTwo = findViewById(R.id.color_two);
+        View colorThree = findViewById(R.id.color_three);
+        View colorFour = findViewById(R.id.color_four);
+        View colorFive = findViewById(R.id.color_five);
+        View colorSix = findViewById(R.id.color_six);
 
-        colorOne.setAlpha(0.5f);
-        colorTwo.setAlpha(0.5f);
-        colorThree.setAlpha(0.5f);
-        colorFour.setAlpha(0.5f);
-        colorFive.setAlpha(0.5f);
-        colorSix.setAlpha(0.5f);
+        colorOne.setAlpha(defs.EXTRA_LOW_OPACITY);
+        colorTwo.setAlpha(defs.EXTRA_LOW_OPACITY);
+        colorThree.setAlpha(defs.EXTRA_LOW_OPACITY);
+        colorFour.setAlpha(defs.EXTRA_LOW_OPACITY);
+        colorFive.setAlpha(defs.EXTRA_LOW_OPACITY);
+        colorSix.setAlpha(defs.EXTRA_LOW_OPACITY);
 
-        Utils.setTouchEffect(colorOne, false);
-        Utils.setTouchEffect(colorTwo, false);
-        Utils.setTouchEffect(colorThree, false);
-        Utils.setTouchEffect(colorFour, false);
-        Utils.setTouchEffect(colorFive, false);
-        Utils.setTouchEffect(colorSix, false);
+        Utils.setTouchEffect(colorOne, false, true);
+        Utils.setTouchEffect(colorTwo, false, true);
+        Utils.setTouchEffect(colorThree, false, true);
+        Utils.setTouchEffect(colorFour, false, true);
+        Utils.setTouchEffect(colorFive, false, true);
+        Utils.setTouchEffect(colorSix, false, true);
 
         selectColorHandler(colorOne, 1);
         selectColorHandler(colorTwo, 2);
@@ -103,13 +102,13 @@ public class CreateProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (selectedColorButton != null) {
-                    selectedColorButton.setAlpha(0.5f);
-                    Utils.setTouchEffect(selectedColorButton, false);
+                    selectedColorButton.setAlpha(defs.LOW_OPACITY);
+                    Utils.setTouchEffect(selectedColorButton, false, false);
                 }
 
                 // array start at 0
                 selectedColor = colorIndex - 1;
-                selectedColorButton = (Button) v;
+                selectedColorButton = v;
                 v.setAlpha(1f);
                 v.setOnTouchListener(null);
             }
@@ -118,6 +117,11 @@ public class CreateProfileActivity extends AppCompatActivity {
 
     public void createProfile() {
         if (isCreating) {
+            return;
+        }
+
+        if (!Utils.isNetworkAvailable(this)) {
+            Toast.makeText(this, "No internet", Toast.LENGTH_LONG).show();
             return;
         }
 

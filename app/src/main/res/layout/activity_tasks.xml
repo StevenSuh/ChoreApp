@@ -4,6 +4,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.TasksActivity">
+    tools:context=".main.tasks.TasksActivity">
+
+    <ImageView
+        android:id="@+id/add_button"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="23dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_plus"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="23dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/circular_pro_medium"
+            android:text="Tasks"
+            android:textSize="28sp" />
+
+        <LinearLayout
+            android:id="@+id/tasks_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/tasks_users"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:scrollbars="vertical|horizontal"
+                android:paddingLeft="38dp"
+                android:paddingRight="38dp"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/tasks_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:orientation="vertical"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/progress_large"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!-- navbar layout -->
+    <include layout="@layout/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="67dp"
+        android:background="@color/colorGray"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <!-- navbar layout -->
 
 </android.support.constraint.ConstraintLayout>
