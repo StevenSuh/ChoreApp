@@ -41,11 +41,10 @@ public class CreateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_profile);
 
         LinearLayout backButton = findViewById(R.id.back);
-        Utils.setTouchEffect(backButton, true, false);
+        Utils.setTouchEffect(backButton, true, false, true);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 finish();
             }
         });
@@ -64,12 +63,12 @@ public class CreateProfileActivity extends AppCompatActivity {
         colorFive.setAlpha(defs.EXTRA_LOW_OPACITY);
         colorSix.setAlpha(defs.EXTRA_LOW_OPACITY);
 
-        Utils.setTouchEffect(colorOne, false, true);
-        Utils.setTouchEffect(colorTwo, false, true);
-        Utils.setTouchEffect(colorThree, false, true);
-        Utils.setTouchEffect(colorFour, false, true);
-        Utils.setTouchEffect(colorFive, false, true);
-        Utils.setTouchEffect(colorSix, false, true);
+        Utils.setTouchEffect(colorOne, false, true, true);
+        Utils.setTouchEffect(colorTwo, false, true, true);
+        Utils.setTouchEffect(colorThree, false, true, true);
+        Utils.setTouchEffect(colorFour, false, true, true);
+        Utils.setTouchEffect(colorFive, false, true, true);
+        Utils.setTouchEffect(colorSix, false, true, true);
 
         selectColorHandler(colorOne, 1);
         selectColorHandler(colorTwo, 2);
@@ -103,7 +102,7 @@ public class CreateProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (selectedColorButton != null) {
                     selectedColorButton.setAlpha(defs.LOW_OPACITY);
-                    Utils.setTouchEffect(selectedColorButton, false, false);
+                    Utils.setTouchEffect(selectedColorButton, false, false, true);
                 }
 
                 // array start at 0

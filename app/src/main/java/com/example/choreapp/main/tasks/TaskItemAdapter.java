@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.choreapp.DataHolder;
 import com.example.choreapp.R;
 import com.example.choreapp.Utils;
 import com.example.choreapp.defs;
@@ -47,6 +47,29 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
         this.notifyDataSetChanged();
     }
 
+    public void replaceItem(TaskItem item) {
+        int currIndex = 0;
+        int origIndex = 0;
+
+        for (TaskItem taskItem : mDataset) {
+            if (taskItem.taskRef.getId().equals(item.taskRef.getId())) {
+                break;
+            }
+            currIndex++;
+        }
+
+        for (TaskItem taskItem : mOrigDataset) {
+            if (taskItem.taskRef.getId().equals(item.taskRef.getId())) {
+                break;
+            }
+            origIndex++;
+        }
+
+        mDataset.set(currIndex, item);
+        mOrigDataset.set(origIndex, item);
+        this.notifyDataSetChanged();
+    }
+
     public void replaceDataset(ArrayList<TaskItem> mDataset) {
         this.mDataset = mDataset;
         this.mOrigDataset = (ArrayList<TaskItem>) mDataset.clone();
@@ -79,7 +102,7 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
         ImageView checkIcon = holder.view.findViewById(R.id.task_done);
         View userColor = holder.view.findViewById(R.id.task_user_color);
         TextView taskNameView = holder.view.findViewById(R.id.task_name);
-        LinearLayout taskArrow = holder.view.findViewById(R.id.task_arrow);
+        ImageView taskArrow = holder.view.findViewById(R.id.task_arrow);
 
         checkIcon.setAlpha(task.is_done ? 1f : defs.EXTRA_LOW_OPACITY);
         taskNameView.setText(task.name);
@@ -92,7 +115,7 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
             userColor.setVisibility(View.GONE);
         }
 
-        Utils.setTouchEffect(checkIcon, task.is_done, true);
+        Utils.setTouchEffect(checkIcon, task.is_done, true, true);
         checkIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,12 +126,13 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
             }
         });
 
-        Utils.setTouchEffect(taskArrow, true, false);
+        Utils.setTouchEffect(taskArrow, true, false, true);
         taskArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DataHolder.getInstance().setTask(task);
                 Intent intent = new Intent(context, TaskDetailsActivity.class);
-                context.startActivity(intent);
+                ((TasksActivity) context).startActivityForResult(intent, TasksActivity.TASK_EDIT);
             }
         });
     }

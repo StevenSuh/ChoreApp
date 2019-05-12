@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.example.choreapp.DataHolder;
 import com.example.choreapp.defs;
-import com.example.choreapp.main.GroupsActivity;
 import com.example.choreapp.R;
 import com.example.choreapp.Utils;
 import com.example.choreapp.models.Group;
@@ -47,7 +46,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_group);
 
         LinearLayout backButton = findViewById(R.id.back);
-        Utils.setTouchEffect(backButton, true, false);
+        Utils.setTouchEffect(backButton, true, false, true);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,8 +191,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     }
                     showProgress(false);
 
-                    Intent intent = new Intent(CreateGroupActivity.this, GroupsActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Intent intent = new Intent(CreateGroupActivity.this, InviteActivity.class);
                     startActivity(intent);
                 }
             });

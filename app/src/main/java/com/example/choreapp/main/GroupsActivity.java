@@ -30,6 +30,7 @@ public class GroupsActivity extends AppCompatActivity {
         View messagesButton = findViewById(R.id.messages_button);
         View accountButton = findViewById(R.id.account_button);
 
+        Utils.initDataHolder(this);
         Utils.initNavbar(groupButton, tasksButton, messagesButton, accountButton, defs.GROUP_PAGE, this);
     }
 }

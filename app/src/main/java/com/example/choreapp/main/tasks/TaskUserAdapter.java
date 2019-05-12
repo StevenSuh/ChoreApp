@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.choreapp.R;
 import com.example.choreapp.Utils;
 import com.example.choreapp.defs;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 
@@ -70,7 +71,7 @@ public class TaskUserAdapter extends RecyclerView.Adapter<TaskUserAdapter.TaskVi
 
         if (position != selectedPos) {
             holder.view.setAlpha(defs.LOW_OPACITY);
-            Utils.setTouchEffect(holder.view, false, false);
+            Utils.setTouchEffect(holder.view, false, false, true);
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -101,11 +102,13 @@ public class TaskUserAdapter extends RecyclerView.Adapter<TaskUserAdapter.TaskVi
         String id;
         String color;
         String name;
+        DocumentReference userRef;
 
-        public TaskUser(String id, String color, String name) {
+        public TaskUser(String id, String color, String name, DocumentReference userRef) {
             this.id = id;
             this.color = color;
             this.name = name;
+            this.userRef = userRef;
         }
     }
 }

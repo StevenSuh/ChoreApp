@@ -161,7 +161,7 @@
             <ImageView
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="8dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/user"/>
 

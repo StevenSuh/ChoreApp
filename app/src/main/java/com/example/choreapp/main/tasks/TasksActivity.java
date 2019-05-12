@@ -2,11 +2,13 @@ package com.example.choreapp.main.tasks;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -40,6 +42,9 @@ public class TasksActivity extends AppCompatActivity {
     private LinearLayout tasksWrapper;
     private ProgressBar progressBar;
 
+    private static int TASK_ADD = 1;
+    public static int TASK_EDIT = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,17 @@ public class TasksActivity extends AppCompatActivity {
         View messagesButton = findViewById(R.id.messages_button);
         View accountButton = findViewById(R.id.account_button);
         Utils.initNavbar(groupButton, tasksButton, messagesButton, accountButton, defs.TASKS_PAGE, this);
+
+        ImageView addButton = findViewById(R.id.add_button);
+        Utils.setTouchEffect(addButton, true, false, true);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataHolder.getInstance().setTask(null);
+                Intent intent = new Intent(TasksActivity.this, TaskDetailsActivity.class);
+                startActivityForResult(intent, TASK_ADD);
+            }
+        });
 
         listView = findViewById(R.id.tasks_list);
         taskItemAdapter = new TaskItemAdapter(new ArrayList<TaskItemAdapter.TaskItem>(), TasksActivity.this);
@@ -65,6 +81,24 @@ public class TasksActivity extends AppCompatActivity {
         loadUsersAndTasks();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        TaskItemAdapter.TaskItem taskItem = DataHolder.getInstance().getTask();
+
+        if (requestCode == TASK_EDIT) {
+            taskItemAdapter.replaceItem(taskItem);
+        }
+        if (requestCode == TASK_ADD) {
+            taskItemAdapter.addItem(taskItem);
+        }
+    }
+
     public void loadUsersAndTasks() {
         if (isLoading) {
             return;
@@ -72,6 +106,11 @@ public class TasksActivity extends AppCompatActivity {
 
         if (!Utils.isNetworkAvailable(this)) {
             Toast.makeText(this, "No internet", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!DataHolder.getInstance().hasUser() || !DataHolder.getInstance().hasGroup()) {
+            Toast.makeText(this, "Server error", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -108,16 +147,20 @@ public class TasksActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot user : task.getResult()) {
                         TaskUserAdapter.TaskUser userItem = new TaskUserAdapter.TaskUser(user.getId(),
                                 user.getString(User.COLOR),
-                                user.getString(User.NAME));
+                                user.getString(User.NAME),
+                                user.getReference());
                         usersSnapshots.add(userItem);
                     }
+
+                    DataHolder.getInstance().setUsersInGroup((ArrayList<TaskUserAdapter.TaskUser>) usersSnapshots.clone());
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             usersSnapshots.add(0, new TaskUserAdapter.TaskUser(defs.TASK_FILTER_ALL,
                                 "#000000",
-                                defs.TASK_FILTER_ALL));
+                                defs.TASK_FILTER_ALL,
+                                null));
                             taskUserAdapter.replaceDataset(usersSnapshots);
                         }
                     });

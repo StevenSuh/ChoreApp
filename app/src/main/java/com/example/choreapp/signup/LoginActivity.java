@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         RelativeLayout signinButton = findViewById(R.id.sign_in_button);
-        Utils.setTouchEffect(signinButton, true, false);
+        Utils.setTouchEffect(signinButton, true, false, true);
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -41,11 +41,12 @@ public class defs {
 
     public static String IS_LOGGED_IN = "IS_LOGGED_IN";
 
-    public static String TASK_FILTER_ALL = "ALL";
+    public static String TASK_FILTER_ALL = "All";
 
     public static String GROUP_PAGE = "group";
     public static String TASKS_PAGE = "tasks";
     public static String MESSAGES_PAGE = "messages";
     public static String ACCOUNT_PAGE = "account";
 
+    public static String[] REASSIGN_INTERVAL = { "Daily", "Weekly", "Monthly", "Yearly", "Never" };
 }

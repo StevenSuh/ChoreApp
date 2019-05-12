@@ -12,12 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".signup.InviteActivity"></activity>
         <activity
             android:name=".main.AccountActivity"
             android:theme="@style/AppTheme_NoTransition" />
-        <activity
-            android:name=".main.tasks.TaskDetailsActivity"
-            android:theme="@style/AppTheme_NoTransition" />
+        <activity android:name=".main.tasks.TaskDetailsActivity" />
         <activity
             android:name=".main.MessagesActivity"
             android:theme="@style/AppTheme_NoTransition" />
