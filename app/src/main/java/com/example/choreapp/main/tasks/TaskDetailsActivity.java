@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -46,6 +47,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
     private TextView saveTextView;
     private ProgressBar saveProgressView;
+
+    private TextView deleteTextView;
+    private ProgressBar deleteProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,20 +129,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
             }
         });
 
-        if (dataHolder.hasTask()) {
-            TaskItemAdapter.TaskItem taskItem = dataHolder.getTask();
-
-            TextView taskDetailText = findViewById(R.id.task_detail_text);
-            taskDetailText.setText("Edit Task");
-
-            taskNameView.setText(taskItem.name);
-            taskPointsView.setText(String.valueOf(taskItem.points));
-
-            isDone = taskItem.is_done;
-            Utils.setTouchEffect(isDoneView, taskItem.is_done, true, true);
-            isDoneView.setAlpha(taskItem.is_done ? 1f : defs.EXTRA_LOW_OPACITY);
-        }
-
         RelativeLayout button = findViewById(R.id.next_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +139,36 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         saveTextView = findViewById(R.id.save_text);
         saveProgressView = findViewById(R.id.save_progress);
+
+        if (dataHolder.hasTask()) {
+            final TaskItemAdapter.TaskItem taskItem = dataHolder.getTask();
+
+            TextView taskDetailText = findViewById(R.id.task_detail_text);
+            taskDetailText.setText("Edit Task");
+
+            taskNameView.setText(taskItem.name);
+            taskPointsView.setText(String.valueOf(taskItem.points));
+
+            isDone = taskItem.is_done;
+            Utils.setTouchEffect(isDoneView, taskItem.is_done, true, true);
+            isDoneView.setAlpha(taskItem.is_done ? 1f : defs.EXTRA_LOW_OPACITY);
+
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) button.getLayoutParams();
+            layoutParams.setMargins(40, 0, 40, 0);
+            button.setLayoutParams(layoutParams);
+
+            RelativeLayout deleteButton = findViewById(R.id.delete_button);
+            deleteButton.setVisibility(View.VISIBLE);
+            Utils.setTouchEffect(deleteButton, true, false, true);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    taskItem.taskRef.delete();
+                    setResult(TasksActivity.RESULT_DELETE);
+                    onSuccess();
+                }
+            });
+        }
     }
 
     public void executeAddOrModifyTask() {
@@ -180,9 +200,11 @@ public class TaskDetailsActivity extends AppCompatActivity {
         taskMap.put(Task.REASSIGN_INTERVAL, reassignInterval);
         taskMap.put(Task.IS_DONE, isDone);
         taskMap.put(Task.GROUP, groupRef);
+        taskMap.put(Task.ACTIVITY, null);
 
         if (DataHolder.getInstance().hasTask()) {
             final TaskItemAdapter.TaskItem taskItem = DataHolder.getInstance().getTask();
+
             taskItem.taskRef.update(taskMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull com.google.android.gms.tasks.Task<Void> task) {
@@ -192,12 +214,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
                     }
                     TaskItemAdapter.TaskItem newTask = new TaskItemAdapter.TaskItem(assignedUser.color,
                             assignedUser.id,
+                            assignedUser.name,
                             name,
                             points,
                             assignedUser.userRef,
                             reassignInterval,
                             isDone,
                             groupRef,
+                            taskItem.activity,
                             taskItem.taskRef);
                     DataHolder.getInstance().setTask(newTask);
 
@@ -218,12 +242,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
                         }
                         TaskItemAdapter.TaskItem newTask = new TaskItemAdapter.TaskItem(assignedUser.color,
                                 assignedUser.id,
+                                assignedUser.name,
                                 name,
                                 points,
                                 assignedUser.userRef,
                                 reassignInterval,
                                 isDone,
                                 groupRef,
+                                null,
                                 task.getResult());
                         DataHolder.getInstance().setTask(newTask);
 

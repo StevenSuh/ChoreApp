@@ -12,13 +12,15 @@ public class Activity {
 
     String task_name;
     String user_name;
-    int points;
+    String user_color;
+    long points;
     Date date;
     DocumentReference group;
 
-    public Activity(String task_name, String user_name, int points, Date date, DocumentReference group) {
+    public Activity(String task_name, String user_name, String user_color, long points, Date date, DocumentReference group) {
         this.task_name = task_name;
         this.user_name = user_name;
+        this.user_color = user_color;
         this.points = points;
         this.date = date;
         this.group = group;

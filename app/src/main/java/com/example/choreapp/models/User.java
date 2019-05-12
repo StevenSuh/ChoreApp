@@ -4,7 +4,6 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class User {
@@ -19,7 +18,7 @@ public class User {
 
     String name;
     String google_id;
-    public List<DocumentReference> groups = new ArrayList<>();
+    public ArrayList<DocumentReference> groups = new ArrayList<>();
     String color;
 
     public User(String name, String google_id) {

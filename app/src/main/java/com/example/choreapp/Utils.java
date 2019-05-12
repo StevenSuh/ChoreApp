@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -16,10 +17,14 @@ import com.example.choreapp.main.MessagesActivity;
 import com.example.choreapp.main.tasks.TasksActivity;
 import com.example.choreapp.models.Group;
 import com.example.choreapp.models.User;
+import com.example.choreapp.signup.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 public class Utils {
 
@@ -49,7 +54,7 @@ public class Utils {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public static void initDataHolder(final Context context) {
+    public static void initDataHolder(final Context context, final Runnable init, final Runnable callback) {
         final SharedPreferences prefs = context.getSharedPreferences(defs.SHARED_PREF, Context.MODE_PRIVATE);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -58,7 +63,10 @@ public class Utils {
             return;
         }
 
+        final String groupId = prefs.getString(Group.GROUP_ID, "");
+
         if (!DataHolder.getInstance().hasUser()) {
+            init.run();
             String userId = prefs.getString(User.USER_ID, "");
 
             db.collection(User.COLLECTION)
@@ -70,16 +78,54 @@ public class Utils {
                             Toast.makeText(context, "Server error", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Toast.makeText(context, "Finished loading user", Toast.LENGTH_SHORT).show();
-                        DataHolder.getInstance().setUser(task.getResult(), prefs);
+                        DocumentSnapshot user = task.getResult();
+                        DataHolder.getInstance().setUser(user, prefs);
+
+                        if (TextUtils.isEmpty(groupId)) {
+                            ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) user.get(User.GROUPS);
+                            DocumentReference group = groups.get(0);
+
+                            if (group == null) {
+                                nukePrefs(context);
+                                return;
+                            }
+
+                            getGroupData(group.getId(), context, prefs, callback);
+                            return;
+                        }
+                        getGroupData(groupId, context, prefs, callback);
                     }
                 });
+            return;
         }
 
         if (!DataHolder.getInstance().hasGroup()) {
-            String groupId = prefs.getString(Group.GROUP_ID, "");
+            init.run();
+            if (TextUtils.isEmpty(groupId)) {
+                DocumentSnapshot user = DataHolder.getInstance().getUser();
+                ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) user.get(User.GROUPS);
+                DocumentReference group = groups.get(0);
 
-            db.collection(Group.COLLECTION)
+                if (group == null) {
+                    nukePrefs(context);
+                    return;
+                }
+
+                getGroupData(group.getId(), context, prefs, callback);
+                return;
+            }
+            getGroupData(groupId, context, prefs, callback);
+            return;
+        }
+    }
+
+    private static void getGroupData(String groupId,
+                                     final Context context,
+                                     final SharedPreferences prefs,
+                                     final Runnable callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection(Group.COLLECTION)
                 .document(groupId).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -88,11 +134,10 @@ public class Utils {
                             Toast.makeText(context, "Server error", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Toast.makeText(context, "Finished loading group", Toast.LENGTH_SHORT).show();
                         DataHolder.getInstance().setGroup(task.getResult(), prefs);
+                        callback.run();
                     }
                 });
-        }
     }
 
     public static void initNavbar(View group, View tasks, View messages, View account, String type, final Context context) {
@@ -157,5 +202,16 @@ public class Utils {
                 group.setOnClickListener(null);
                 break;
         }
+    }
+
+    public static void nukePrefs(Context context) {
+        Toast.makeText(context, "Account error", Toast.LENGTH_SHORT).show();
+
+        SharedPreferences prefs = context.getSharedPreferences(defs.SHARED_PREF, Context.MODE_PRIVATE);
+        prefs.edit().clear().apply();
+
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
     }
 }

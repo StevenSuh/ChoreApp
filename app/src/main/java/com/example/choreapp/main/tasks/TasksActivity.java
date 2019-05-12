@@ -44,6 +44,7 @@ public class TasksActivity extends AppCompatActivity {
 
     private static int TASK_ADD = 1;
     public static int TASK_EDIT = 0;
+    public static int RESULT_DELETE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +86,18 @@ public class TasksActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_OK) {
+        if (resultCode == RESULT_CANCELED) {
             return;
         }
 
         TaskItemAdapter.TaskItem taskItem = DataHolder.getInstance().getTask();
 
         if (requestCode == TASK_EDIT) {
-            taskItemAdapter.replaceItem(taskItem);
+            if (resultCode == RESULT_DELETE) {
+                taskItemAdapter.deleteItem(taskItem);
+            } else {
+                taskItemAdapter.replaceItem(taskItem);
+            }
         }
         if (requestCode == TASK_ADD) {
             taskItemAdapter.addItem(taskItem);
@@ -201,7 +206,7 @@ public class TasksActivity extends AppCompatActivity {
 
     private void loadTaskItem(final QueryDocumentSnapshot taskSnap, final DocumentReference assignedUserRef) {
         if (assignedUserRef == null) {
-            addTaskItem(null, null, taskSnap, null);
+            addTaskItem(null, null, null, taskSnap, null);
             return;
         }
 
@@ -217,24 +222,28 @@ public class TasksActivity extends AppCompatActivity {
                     DocumentSnapshot assignedUser = task.getResult();
                     String userColor = assignedUser.getString(User.COLOR);
                     String userId = assignedUser.getId();
+                    String userName = assignedUser.getString(User.NAME);
 
-                    addTaskItem(userColor, userId, taskSnap, assignedUserRef);
+                    addTaskItem(userColor, userId, userName, taskSnap, assignedUserRef);
                 }
             });
     }
 
     private void addTaskItem(String userColor,
                              String userId,
+                             String userName,
                              DocumentSnapshot taskSnap,
                              DocumentReference assignedUserRef) {
         final TaskItemAdapter.TaskItem taskItem = new TaskItemAdapter.TaskItem(userColor,
                 userId,
+                userName,
                 taskSnap.getString(Task.NAME),
                 taskSnap.getLong(Task.POINTS),
                 assignedUserRef,
                 taskSnap.getString(Task.REASSIGN_INTERVAL),
                 (boolean) taskSnap.get(Task.IS_DONE),
                 taskSnap.getDocumentReference(Task.GROUP),
+                taskSnap.getDocumentReference(Task.ACTIVITY),
                 taskSnap.getReference());
 
         runOnUiThread(new Runnable() {

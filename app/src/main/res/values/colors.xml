@@ -8,4 +8,5 @@
     <color name="colorLight">#FFFFFF</color>
     <color name="colorLight_pressed">#E5E5E5</color>
     <color name="colorGray">#BDBDBD</color>
+    <color name="colorRed">#E19292</color>
 </resources>
