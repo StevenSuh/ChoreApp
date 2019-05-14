@@ -193,7 +193,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 .get(assignToIndex);
         final String reassignInterval = defs.REASSIGN_INTERVAL[reassignIndex];
         final boolean isDone = this.isDone;
-        final DocumentReference groupRef = DataHolder.getInstance().getGroup().getReference();
+        final DocumentReference groupRef = DataHolder.getInstance().getGroup().groupRef;
         final Date created = new Date();
         final Date updated = new Date();
 

@@ -20,6 +20,7 @@ public class Task {
     public static String CREATED = "created";
     public static String UPDATED = "updated";
 
+    public DocumentReference taskRef;
     public String name;
     public long points;
     public DocumentReference assigned_user;

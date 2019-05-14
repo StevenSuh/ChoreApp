@@ -4,7 +4,6 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Group {
@@ -17,14 +16,24 @@ public class Group {
     public static String ACTIVITIES = "activities";
     public static String MESSAGES = "messages";
 
-    String name;
-    public List<DocumentReference> users = new ArrayList<>();
-    public List<DocumentReference> tasks = new ArrayList<>();
-    public List<DocumentReference> activities = new ArrayList<>();
-    public List<DocumentReference> messages = new ArrayList<>();
+    public DocumentReference groupRef;
+    public String name;
+    public ArrayList<DocumentReference> users = new ArrayList<>();
+    public ArrayList<DocumentReference> tasks = new ArrayList<>();
+    public ArrayList<DocumentReference> activities = new ArrayList<>();
+    public ArrayList<DocumentReference> messages = new ArrayList<>();
 
     public Group(String name) {
         this.name = name;
+    }
+
+    public Group(DocumentReference groupRef, Map<String, Object> map) {
+        this.groupRef = groupRef;
+        this.name = (String) map.get(NAME);
+        this.users = (ArrayList<DocumentReference>) map.get(USERS);
+        this.tasks = (ArrayList<DocumentReference>) map.get(TASKS);
+        this.activities = (ArrayList<DocumentReference>) map.get(ACTIVITIES);
+        this.messages = (ArrayList<DocumentReference>) map.get(MESSAGES);
     }
 
     public Map<String, Object> toMap() {

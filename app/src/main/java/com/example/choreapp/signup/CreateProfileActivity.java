@@ -101,8 +101,9 @@ public class CreateProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (selectedColorButton != null) {
-                    selectedColorButton.setAlpha(defs.LOW_OPACITY);
+                    selectedColorButton.setAlpha(defs.EXTRA_LOW_OPACITY);
                     Utils.setTouchEffect(selectedColorButton, false, false, true);
+                    selectColorHandler(selectedColorButton, selectedColor);
                 }
 
                 // array start at 0
@@ -110,6 +111,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                 selectedColorButton = v;
                 v.setAlpha(1f);
                 v.setOnTouchListener(null);
+                v.setOnClickListener(null);
             }
         });
     }
@@ -126,13 +128,12 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         nameView.setError(null);
 
-        String name = nameView.getText().toString();
-
         if (selectedColor < 0) {
             Toast.makeText(this, "Select a profile color", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        final String name = nameView.getText().toString();
         if (TextUtils.isEmpty(name)) {
             nameView.setError("This field is required");
             nameView.requestFocus();
@@ -141,7 +142,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         showProgress(true);
 
-        DocumentReference user = DataHolder.getInstance().getUser().getReference();
+        DocumentReference user = DataHolder.getInstance().getUser().userRef;
         user.update(
                 User.NAME, name,
                 User.COLOR, defs.USER_COLORS[selectedColor])
@@ -155,6 +156,9 @@ public class CreateProfileActivity extends AppCompatActivity {
                         return;
                     }
 
+                    User user = DataHolder.getInstance().getUser();
+                    user.name = name;
+                    user.color = defs.USER_COLORS[selectedColor];
                     startCreateGroup();
                 }
             });

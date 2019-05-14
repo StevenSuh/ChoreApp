@@ -16,14 +16,23 @@ public class User {
     public static String COLOR = "color";
     public static String GROUPS = "groups";
 
-    String name;
-    String google_id;
+    public DocumentReference userRef;
+    public String name;
+    public String google_id;
     public ArrayList<DocumentReference> groups = new ArrayList<>();
-    String color;
+    public String color;
 
     public User(String name, String google_id) {
         this.name = name;
         this.google_id = google_id;
+    }
+
+    public User(DocumentReference userRef, Map<String, Object> map) {
+        this.userRef = userRef;
+        this.name = (String) map.get(NAME);
+        this.google_id = (String) map.get(GOOGLE_ID);
+        this.groups = (ArrayList<DocumentReference>) map.get(GROUPS);
+        this.color = (String) map.get(COLOR);
     }
 
     public Map<String, Object> toMap() {

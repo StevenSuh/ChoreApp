@@ -17,14 +17,18 @@ import java.util.ArrayList;
 // Acts as a cache
 public class DataHolder {
 
-    private DocumentSnapshot user = null;
-    private DocumentSnapshot currentGroup = null;
+    private User user = null;
+    private Group currentGroup = null;
 
     private TaskItemAdapter.TaskItem selectedTask = null;
     private ArrayList<TaskUserAdapter.TaskUser> usersInGroup = null;
 
-    public DocumentSnapshot getUser() {
+    public User getUser() {
         return user;
+    }
+
+    public Group getGroup() {
+        return currentGroup;
     }
 
     public TaskItemAdapter.TaskItem getTask() {
@@ -54,15 +58,11 @@ public class DataHolder {
     }
 
     public void setUser(DocumentSnapshot user, SharedPreferences prefs) {
-        this.user = user;
+        this.user = new User(user.getReference(), user.getData());
 
         prefs.edit()
             .putString(User.USER_ID, user.getId())
             .apply();
-    }
-
-    public DocumentSnapshot getGroup() {
-        return currentGroup;
     }
 
     public void setGroup(DocumentReference group, final SharedPreferences prefs) {
@@ -84,7 +84,7 @@ public class DataHolder {
     }
 
     public void setGroup(DocumentSnapshot group, SharedPreferences prefs) {
-        this.currentGroup = group;
+        this.currentGroup = new Group(group.getReference(), group.getData());
 
         prefs.edit()
             .putString(Group.GROUP_ID, group.getId())

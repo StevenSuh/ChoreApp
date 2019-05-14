@@ -38,6 +38,8 @@ public class defs {
     }
 
     public static String SHARED_PREF = "SHARED_PREFS_CHOREAPP";
+    public static String NOTIFICATIONS_ALLOW_TASKS = "NOTIFICATIONS_ALLOW_TASKS";
+    public static String NOTIFICATIONS_ALLOW_MESSAGES = "NOTIFICATIONS_ALLOW_MESSAGES";
 
     public static String IS_LOGGED_IN = "IS_LOGGED_IN";
 

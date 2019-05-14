@@ -10,11 +10,12 @@ public class Activity {
 
     public static String COLLECTION = "activities";
 
-    String task_name;
-    DocumentReference user;
-    long points;
-    Date date;
-    DocumentReference group;
+    public DocumentReference activityRef;
+    public String task_name;
+    public DocumentReference user;
+    public long points;
+    public Date date;
+    public DocumentReference group;
 
     public Activity(String task_name, DocumentReference user, long points, Date date, DocumentReference group) {
         this.task_name = task_name;

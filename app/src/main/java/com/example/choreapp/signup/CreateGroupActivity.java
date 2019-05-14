@@ -108,7 +108,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         Group newGroup = new Group(name);
 
         if (DataHolder.getInstance().hasUser()) {
-            newGroup.users.add(DataHolder.getInstance().getUser().getReference());
+            newGroup.users.add(DataHolder.getInstance().getUser().userRef);
         }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -154,7 +154,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         if (users == null) {
             users = new ArrayList<>();
         }
-        users.add(DataHolder.getInstance().getUser().getReference());
+        users.add(DataHolder.getInstance().getUser().userRef);
 
         group.getReference()
             .update(Group.USERS, users)
@@ -171,17 +171,16 @@ public class CreateGroupActivity extends AppCompatActivity {
     }
 
     public void successCreateGroup(DocumentReference group) {
-        DocumentSnapshot user = DataHolder.getInstance().getUser();
+        final User user = DataHolder.getInstance().getUser();
 
-        List<DocumentReference> userGroups = (List<DocumentReference>) user.get(User.GROUPS);
-        if (userGroups == null) {
-            userGroups = new ArrayList<>();
+        if (user.groups == null) {
+            user.groups = new ArrayList<>();
         }
-        userGroups.add(group);
+        user.groups.add(group);
         DataHolder.getInstance().setGroup(group, getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE));
 
-        user.getReference()
-            .update(User.GROUPS, userGroups)
+        user.userRef
+            .update(User.GROUPS, user.groups)
             .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

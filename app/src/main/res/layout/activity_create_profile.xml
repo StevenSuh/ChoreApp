@@ -82,8 +82,8 @@
                 android:layout_weight="1">
                 <View
                     android:id="@+id/color_one"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/color_one" />
             </RelativeLayout>
@@ -94,8 +94,8 @@
                 android:layout_weight="1">
                 <View
                     android:id="@+id/color_two"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/color_two" />
             </RelativeLayout>
@@ -106,8 +106,8 @@
                 android:layout_weight="1">
                 <View
                     android:id="@+id/color_three"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/color_three" />
             </RelativeLayout>
@@ -118,8 +118,8 @@
                 android:layout_weight="1">
                 <View
                     android:id="@+id/color_four"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/color_four" />
             </RelativeLayout>
@@ -130,8 +130,8 @@
                 android:layout_weight="1">
                 <View
                     android:id="@+id/color_five"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/color_five" />
             </RelativeLayout>
@@ -142,8 +142,8 @@
                 android:layout_weight="1">
                 <View
                     android:id="@+id/color_six"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/color_six" />
             </RelativeLayout>

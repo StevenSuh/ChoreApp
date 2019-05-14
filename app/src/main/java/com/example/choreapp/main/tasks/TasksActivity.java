@@ -126,18 +126,17 @@ public class TasksActivity extends AppCompatActivity {
 
     private void loadUsers() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final DocumentSnapshot group = DataHolder.getInstance().getGroup();
-        final ArrayList<DocumentReference> users = (ArrayList<DocumentReference>) group.get(Group.USERS);
+        final Group group = DataHolder.getInstance().getGroup();
 
-        final ArrayList<TaskUserAdapter.TaskUser> usersSnapshots = new ArrayList<>();
-
-        if (users == null) {
+        if (group.users == null) {
             Toast.makeText(TasksActivity.this, "Server error", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        final ArrayList<TaskUserAdapter.TaskUser> usersSnapshots = new ArrayList<>();
+
         db.collection(User.COLLECTION)
-            .whereArrayContains(User.GROUPS, group.getReference())
+            .whereArrayContains(User.GROUPS, group.groupRef)
             .get()
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -175,16 +174,15 @@ public class TasksActivity extends AppCompatActivity {
 
     private void loadTasks() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final DocumentSnapshot group = DataHolder.getInstance().getGroup();
-        final ArrayList<DocumentReference> tasks = (ArrayList<DocumentReference>) group.get(Group.TASKS);
+        final Group group = DataHolder.getInstance().getGroup();
 
-        if (tasks == null) {
+        if (group.tasks == null) {
             Toast.makeText(TasksActivity.this, "Server error", Toast.LENGTH_SHORT).show();
             return;
         }
 
         db.collection(Task.COLLECTION)
-            .whereEqualTo(Task.GROUP, group.getReference())
+            .whereEqualTo(Task.GROUP, group.groupRef)
             .get()
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override

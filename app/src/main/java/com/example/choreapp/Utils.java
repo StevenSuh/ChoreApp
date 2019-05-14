@@ -102,9 +102,8 @@ public class Utils {
         if (!DataHolder.getInstance().hasGroup()) {
             init.run();
             if (TextUtils.isEmpty(groupId)) {
-                DocumentSnapshot user = DataHolder.getInstance().getUser();
-                ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) user.get(User.GROUPS);
-                DocumentReference group = groups.get(0);
+                User user = DataHolder.getInstance().getUser();
+                DocumentReference group = user.groups.get(0);
 
                 if (group == null) {
                     nukePrefs(context);
@@ -115,7 +114,6 @@ public class Utils {
                 return;
             }
             getGroupData(groupId, context, prefs, callback);
-            return;
         }
     }
 

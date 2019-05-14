@@ -9,10 +9,11 @@ public class Message {
 
     public static String COLLECTION = "messages";
 
-    String content;
-    boolean is_anonymous;
-    DocumentReference user;
-    DocumentReference group;
+    public DocumentReference messageRef;
+    public String content;
+    public boolean is_anonymous;
+    public DocumentReference user;
+    public DocumentReference group;
 
     public Message(String content, boolean is_anonymous, DocumentReference user, DocumentReference group) {
         this.content = content;
