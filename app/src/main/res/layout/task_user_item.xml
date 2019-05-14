@@ -14,7 +14,7 @@
 
     <TextView
         android:id="@+id/task_filter_user_name"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:maxWidth="50dp"
         android:layout_gravity="center_horizontal"
@@ -22,6 +22,7 @@
         android:scrollHorizontally="true"
         android:ellipsize="end"
         android:singleLine="true"
+        android:textAlignment="center"
         android:textColor="@color/colorBlackLight"
         android:textSize="12sp"
         android:textAllCaps="true" />
