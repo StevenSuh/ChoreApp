@@ -11,16 +11,14 @@ public class Activity {
     public static String COLLECTION = "activities";
 
     String task_name;
-    String user_name;
-    String user_color;
+    DocumentReference user;
     long points;
     Date date;
     DocumentReference group;
 
-    public Activity(String task_name, String user_name, String user_color, long points, Date date, DocumentReference group) {
+    public Activity(String task_name, DocumentReference user, long points, Date date, DocumentReference group) {
         this.task_name = task_name;
-        this.user_name = user_name;
-        this.user_color = user_color;
+        this.user = user;
         this.points = points;
         this.date = date;
         this.group = group;
@@ -29,7 +27,7 @@ public class Activity {
     public Map<String, Object> toMap() {
         Map<String, Object> activity = new HashMap<>();
         activity.put("task_name", task_name);
-        activity.put("user_name", user_name);
+        activity.put("user", user);
         activity.put("points", points);
         activity.put("date", date);
         activity.put("group", group);

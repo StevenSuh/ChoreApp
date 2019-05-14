@@ -28,6 +28,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -183,7 +184,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         showProgress(true);
 
-        Map<String, Object> taskMap = new HashMap<>();
+        final Map<String, Object> taskMap = new HashMap<>();
 
         final String name = taskNameView.getText().toString();
         final long points = Long.parseLong(taskPointsView.getText().toString());
@@ -193,6 +194,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
         final String reassignInterval = defs.REASSIGN_INTERVAL[reassignIndex];
         final boolean isDone = this.isDone;
         final DocumentReference groupRef = DataHolder.getInstance().getGroup().getReference();
+        final Date created = new Date();
+        final Date updated = new Date();
 
         taskMap.put(Task.NAME, name);
         taskMap.put(Task.POINTS, points);
@@ -201,9 +204,18 @@ public class TaskDetailsActivity extends AppCompatActivity {
         taskMap.put(Task.IS_DONE, isDone);
         taskMap.put(Task.GROUP, groupRef);
         taskMap.put(Task.ACTIVITY, null);
+        taskMap.put(Task.CREATED, created);
+        taskMap.put(Task.UPDATED, updated);
 
         if (DataHolder.getInstance().hasTask()) {
             final TaskItemAdapter.TaskItem taskItem = DataHolder.getInstance().getTask();
+
+            taskMap.put(Task.ACTIVITY, taskItem.activity);
+            taskMap.put(Task.CREATED, taskItem.created);
+
+            if (reassignInterval.equals(taskItem.reassign_interval)) {
+                taskMap.put(Task.UPDATED, taskItem.updated);
+            }
 
             taskItem.taskRef.update(taskMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
@@ -222,7 +234,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
                             isDone,
                             groupRef,
                             taskItem.activity,
-                            taskItem.taskRef);
+                            taskItem.taskRef,
+                            taskItem.created,
+                            (Date) taskMap.get(Task.UPDATED));
                     DataHolder.getInstance().setTask(newTask);
 
                     setResult(Activity.RESULT_OK);
@@ -250,7 +264,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                 isDone,
                                 groupRef,
                                 null,
-                                task.getResult());
+                                task.getResult(),
+                                created,
+                                updated);
                         DataHolder.getInstance().setTask(newTask);
 
                         setResult(Activity.RESULT_OK);

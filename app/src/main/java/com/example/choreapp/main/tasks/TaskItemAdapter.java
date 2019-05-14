@@ -28,8 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskViewHolder> {
 
@@ -188,7 +186,7 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
         showProgress(true, checkIcon, checkProgress);
         task.isUpdating = true;
 
-        Activity activity = new Activity(task.name, task.userName, task.color, task.points, new Date(), task.group);
+        Activity activity = new Activity(task.name, task.assigned_user, task.points, new Date(), task.group);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Activity.COLLECTION)
@@ -268,8 +266,10 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
                         boolean is_done,
                         DocumentReference group,
                         DocumentReference activity,
-                        DocumentReference taskRef) {
-            super(name, points, assigned_user, reassign_interval, is_done, group, activity);
+                        DocumentReference taskRef,
+                        Date created,
+                        Date updated) {
+            super(name, points, assigned_user, reassign_interval, is_done, group, activity, created, updated);
 
             this.color = color;
             this.userName = userName;

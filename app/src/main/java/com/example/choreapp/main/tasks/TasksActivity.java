@@ -244,7 +244,9 @@ public class TasksActivity extends AppCompatActivity {
                 (boolean) taskSnap.get(Task.IS_DONE),
                 taskSnap.getDocumentReference(Task.GROUP),
                 taskSnap.getDocumentReference(Task.ACTIVITY),
-                taskSnap.getReference());
+                taskSnap.getReference(),
+                taskSnap.getDate(Task.CREATED),
+                taskSnap.getDate(Task.UPDATED));
 
         runOnUiThread(new Runnable() {
             @Override
