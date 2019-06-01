@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.choreapp.DataHolder;
-import com.example.choreapp.main.GroupsActivity;
+import com.example.choreapp.main.groups.GroupsActivity;
 import com.example.choreapp.R;
 import com.example.choreapp.Utils;
 import com.example.choreapp.defs;

@@ -2,7 +2,6 @@ package com.example.choreapp.main.messages;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -164,15 +162,15 @@ public class MessagesActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull final com.google.android.gms.tasks.Task<QuerySnapshot> task) {
-                        showProgress(false);
-
                         if (!task.isSuccessful()) {
                             Toast.makeText(MessagesActivity.this, "Server error", Toast.LENGTH_SHORT).show();
+                            showProgress(false);
                             return;
                         }
 
                         QuerySnapshot result = task.getResult();
                         if (result == null || result.isEmpty()) {
+                            showProgress(false);
                             listView.animate()
                                     .setDuration(200)
                                     .alpha(0)
@@ -214,6 +212,7 @@ public class MessagesActivity extends AppCompatActivity {
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<DocumentSnapshot> task) {
                         if (!task.isSuccessful()) {
                             Toast.makeText(MessagesActivity.this, "Server error", Toast.LENGTH_SHORT).show();
+                            showProgress(false);
                             return;
                         }
 
@@ -244,6 +243,7 @@ public class MessagesActivity extends AppCompatActivity {
             public void run() {
                 messageItemAdapter.addItem(messageItem);
                 listView.scrollToPosition(messageItemAdapter.getItemCount() - 1);
+                showProgress(false);
             }
         });
     }
@@ -269,6 +269,26 @@ public class MessagesActivity extends AppCompatActivity {
             return;
         }
 
+        listView.animate()
+                .setDuration(200)
+                .alpha(1)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        listView.setVisibility(View.VISIBLE);
+                    }
+                });
+
+        noMessage.animate()
+                .setDuration(200)
+                .alpha(0)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        noMessage.setVisibility(View.INVISIBLE);
+                    }
+                });
+
         showSendProgress(true);
 
         final User user = DataHolder.getInstance().getUser();
@@ -293,7 +313,7 @@ public class MessagesActivity extends AppCompatActivity {
                             return;
                         }
 
-                        MessageItemAdapter.MessageItem newMessage = new MessageItemAdapter.MessageItem(content,
+                        final MessageItemAdapter.MessageItem newMessage = new MessageItemAdapter.MessageItem(content,
                                 isAnonymous,
                                 user.name,
                                 user.userRef,
@@ -301,7 +321,25 @@ public class MessagesActivity extends AppCompatActivity {
                                 currDate,
                                 user.color,
                                 task.getResult());
-                        successSend(newMessage);
+
+                        final Group group = DataHolder.getInstance().getGroup();
+
+                        if (group.messages == null) {
+                            group.messages = new ArrayList<>();
+                        }
+                        group.messages.add(newMessage.messageRef);
+                        group.groupRef
+                                .update(Group.MESSAGES, group.messages)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (!task.isSuccessful()) {
+                                            failSend();
+                                            return;
+                                        }
+                                        successSend(newMessage);
+                                    }
+                                });
                     }
                 });
     }

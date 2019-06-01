@@ -36,6 +36,18 @@ public class Group {
         this.messages = (ArrayList<DocumentReference>) map.get(MESSAGES);
     }
 
+    public Group(String name,
+                 ArrayList<DocumentReference> users,
+                 ArrayList<DocumentReference> tasks,
+                 ArrayList<DocumentReference> activities,
+                 ArrayList<DocumentReference> messages) {
+        this.name = name;
+        this.users = users;
+        this.tasks = tasks;
+        this.activities = activities;
+        this.messages = messages;
+    }
+
     public Map<String, Object> toMap() {
         Map<String, Object> group = new HashMap<>();
         group.put("name", name);

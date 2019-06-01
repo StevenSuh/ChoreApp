@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.choreapp.DataHolder;
 import com.example.choreapp.R;
-import com.example.choreapp.main.GroupsActivity;
+import com.example.choreapp.main.groups.GroupsActivity;
 import com.example.choreapp.models.Message;
 import com.example.choreapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -143,8 +143,6 @@ public class MessagingService extends Service {
     public void onCreate() {
         super.onCreate();
         instance = this;
-
-        System.out.println("MessagingService started");
     }
 
     @Override

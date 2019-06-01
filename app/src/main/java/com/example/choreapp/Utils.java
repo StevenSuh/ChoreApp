@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.choreapp.main.AccountActivity;
-import com.example.choreapp.main.GroupsActivity;
+import com.example.choreapp.main.groups.GroupsActivity;
 import com.example.choreapp.main.messages.MessagesActivity;
 import com.example.choreapp.main.tasks.TasksActivity;
 import com.example.choreapp.models.Group;
@@ -212,8 +212,6 @@ public class Utils {
     }
 
     public static void nukePrefs(Context context) {
-        Toast.makeText(context, "Account error", Toast.LENGTH_SHORT).show();
-
         SharedPreferences prefs = context.getSharedPreferences(defs.SHARED_PREF, Context.MODE_PRIVATE);
         prefs.edit().clear().apply();
 

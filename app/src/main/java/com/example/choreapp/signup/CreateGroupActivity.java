@@ -79,8 +79,6 @@ public class CreateGroupActivity extends AppCompatActivity {
             return;
         }
 
-        showProgress(true);
-
         groupNameView.setError(null);
         groupLinkView.setError(null);
 
@@ -96,6 +94,8 @@ public class CreateGroupActivity extends AppCompatActivity {
             Toast.makeText(this, "Both fields cannot be filled", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        showProgress(true);
 
         if (TextUtils.isEmpty(groupCode)) {
             createNewGroup(groupName);

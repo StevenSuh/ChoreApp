@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.choreapp.DataHolder;
@@ -35,6 +36,7 @@ public class TasksActivity extends AppCompatActivity {
 
     private RecyclerView listView;
     private TaskItemAdapter taskItemAdapter;
+    private TextView noResult;
 
     private RecyclerView userView;
     private TaskUserAdapter taskUserAdapter;
@@ -68,8 +70,11 @@ public class TasksActivity extends AppCompatActivity {
             }
         });
 
+        noResult = findViewById(R.id.no_task);
         listView = findViewById(R.id.tasks_list);
         taskItemAdapter = new TaskItemAdapter(new ArrayList<TaskItemAdapter.TaskItem>(), TasksActivity.this);
+        listView.setDrawingCacheEnabled(true);
+        listView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         listView.setAdapter(taskItemAdapter);
 
         userView = findViewById(R.id.tasks_users);
@@ -95,12 +100,53 @@ public class TasksActivity extends AppCompatActivity {
         if (requestCode == TASK_EDIT) {
             if (resultCode == RESULT_DELETE) {
                 taskItemAdapter.deleteItem(taskItem);
+
+                if (taskItemAdapter.getItemCount() == 0) {
+                    listView.animate()
+                            .setDuration(200)
+                            .alpha(0)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    listView.setVisibility(View.INVISIBLE);
+                                }
+                            });
+
+                    noResult.animate()
+                            .setDuration(200)
+                            .alpha(1)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    noResult.setVisibility(View.VISIBLE);
+                                }
+                            });
+                }
             } else {
                 taskItemAdapter.replaceItem(taskItem);
             }
         }
         if (requestCode == TASK_ADD) {
             taskItemAdapter.addItem(taskItem);
+            listView.animate()
+                    .setDuration(200)
+                    .alpha(1)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            listView.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+            noResult.animate()
+                    .setDuration(200)
+                    .alpha(0)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            noResult.setVisibility(View.INVISIBLE);
+                        }
+                    });
         }
     }
 
@@ -187,14 +233,39 @@ public class TasksActivity extends AppCompatActivity {
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull final com.google.android.gms.tasks.Task<QuerySnapshot> task) {
-                    showProgress(false);
-
                     if (!task.isSuccessful()) {
                         Toast.makeText(TasksActivity.this, "Server error", Toast.LENGTH_SHORT).show();
+                        showProgress(false);
                         return;
                     }
 
-                    for (QueryDocumentSnapshot taskSnap : task.getResult()) {
+                    QuerySnapshot result = task.getResult();
+
+                    if (result == null || result.isEmpty()) {
+                        showProgress(false);
+                        listView.animate()
+                                .setDuration(200)
+                                .alpha(0)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        listView.setVisibility(View.INVISIBLE);
+                                    }
+                                });
+
+                        noResult.animate()
+                                .setDuration(200)
+                                .alpha(1)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        noResult.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                        return;
+                    }
+
+                    for (QueryDocumentSnapshot taskSnap : result) {
                         DocumentReference assignedUserRef = taskSnap.getDocumentReference(Task.ASSIGNED_USER);
                         loadTaskItem(taskSnap, assignedUserRef);
                     }
@@ -214,6 +285,7 @@ public class TasksActivity extends AppCompatActivity {
                 public void onComplete(@NonNull com.google.android.gms.tasks.Task<DocumentSnapshot> task) {
                     if (!task.isSuccessful()) {
                         Toast.makeText(TasksActivity.this, "Server error", Toast.LENGTH_SHORT).show();
+                        showProgress(false);
                         return;
                     }
 
@@ -250,6 +322,7 @@ public class TasksActivity extends AppCompatActivity {
             @Override
             public void run() {
                 taskItemAdapter.addItem(taskItem);
+                showProgress(false);
             }
         });
     }
