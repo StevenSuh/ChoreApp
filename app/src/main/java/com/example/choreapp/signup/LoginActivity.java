@@ -19,6 +19,7 @@ import com.example.choreapp.main.GroupsActivity;
 import com.example.choreapp.R;
 import com.example.choreapp.Utils;
 import com.example.choreapp.defs;
+import com.example.choreapp.main.messages.MessagingService;
 import com.example.choreapp.models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -62,6 +63,9 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(this, GroupsActivity.class));
             finish();
             return;
+        } else {
+            Intent intent = new Intent(this, MessagingService.class);
+            stopService(intent);
         }
 
         mAuth = FirebaseAuth.getInstance();

@@ -3,14 +3,18 @@ package com.example.choreapp.main;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.example.choreapp.DataHolder;
 import com.example.choreapp.R;
 import com.example.choreapp.Utils;
 import com.example.choreapp.defs;
+import com.example.choreapp.main.messages.MessagingService;
+import com.example.choreapp.models.Group;
 import com.example.choreapp.signup.LoginActivity;
 
 public class GroupsActivity extends AppCompatActivity {
@@ -31,6 +35,9 @@ public class GroupsActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, MessagingService.class);
+            startService(intent);
         }
 
         groupsWrapper = findViewById(R.id.groups_wrapper);
@@ -51,6 +58,8 @@ public class GroupsActivity extends AppCompatActivity {
         }, new Runnable() {
             @Override
             public void run() {
+                Group group = DataHolder.getInstance().getGroup();
+                MessagingService.subscribeTo(group.groupRef);
                 showProgress(false);
             }
         });

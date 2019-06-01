@@ -170,7 +170,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             });
     }
 
-    public void successCreateGroup(DocumentReference group) {
+    public void successCreateGroup(final DocumentReference group) {
         final User user = DataHolder.getInstance().getUser();
 
         if (user.groups == null) {
@@ -191,6 +191,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     showProgress(false);
 
                     Intent intent = new Intent(CreateGroupActivity.this, InviteActivity.class);
+                    intent.putExtra(defs.INVITE_CODE, group.getId());
                     startActivity(intent);
                 }
             });

@@ -2,6 +2,7 @@ package com.example.choreapp.main;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.example.choreapp.R;
 import com.example.choreapp.defs;
 import com.example.choreapp.Utils;
 import com.example.choreapp.models.User;
+import com.example.choreapp.signup.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -62,6 +64,7 @@ public class AccountActivity extends AppCompatActivity {
         initNotifications();
 
         RelativeLayout saveButton = findViewById(R.id.save_button);
+        Utils.setTouchEffect(saveButton, true, false, true);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +74,20 @@ public class AccountActivity extends AppCompatActivity {
 
         saveTextView = findViewById(R.id.save_text);
         progressBar = findViewById(R.id.save_progress);
+
+        RelativeLayout signOutButton = findViewById(R.id.sign_out_button);
+        Utils.setTouchEffect(signOutButton, true, false, true);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
+    }
+
+    private void signOut() {
+        finish();
+        Utils.nukePrefs(this);
     }
 
     private void updateProfile() {

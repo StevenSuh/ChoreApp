@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.choreapp.main.AccountActivity;
 import com.example.choreapp.main.GroupsActivity;
-import com.example.choreapp.main.MessagesActivity;
+import com.example.choreapp.main.messages.MessagesActivity;
 import com.example.choreapp.main.tasks.TasksActivity;
 import com.example.choreapp.models.Group;
 import com.example.choreapp.models.User;
@@ -29,6 +29,15 @@ import java.util.ArrayList;
 public class Utils {
 
     private static ConnectivityManager connectivityManager;
+
+    public static boolean canParseLong(String value) {
+        try {
+            Long.parseLong(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
     public static void setTouchEffect(View view, final boolean goDark, boolean extraDark, final boolean withClick) {
         final float lowOpacity = extraDark ? defs.EXTRA_LOW_OPACITY : defs.LOW_OPACITY;

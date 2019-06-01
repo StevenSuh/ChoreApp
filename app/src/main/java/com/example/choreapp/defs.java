@@ -50,5 +50,11 @@ public class defs {
     public static String MESSAGES_PAGE = "messages";
     public static String ACCOUNT_PAGE = "account";
 
+    public static String INVITE_CODE = "invite_code";
+
     public static String[] REASSIGN_INTERVAL = { "Daily", "Weekly", "Monthly", "Yearly", "Never" };
+
+    public static int HOURS_IN_MILLISECONDS = 1000 * 60 * 60 * 4;
+
+    public static String IS_ANONYMOUS = "IS_ANONYMOUS";
 }

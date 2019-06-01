@@ -19,8 +19,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingTop="23dp"
+        android:layout_marginBottom="68dp"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -35,9 +36,9 @@
         <LinearLayout
             android:id="@+id/tasks_wrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="invisible">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/tasks_users"
@@ -53,11 +54,10 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/tasks_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_marginTop="40dp"
+                android:scrollbars="vertical"
                 android:orientation="vertical"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
         </LinearLayout>
@@ -71,7 +71,7 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/progress_large"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

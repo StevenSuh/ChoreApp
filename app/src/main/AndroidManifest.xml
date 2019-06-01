@@ -7,10 +7,11 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/app_logo"
+        android:roundIcon="@drawable/app_logo_round"
         android:supportsRtl="true"
+        android:windowSoftInputMode="adjustNothing"
         android:theme="@style/AppTheme">
         <activity android:name=".signup.InviteActivity"></activity>
         <activity
@@ -18,7 +19,7 @@
             android:theme="@style/AppTheme_NoTransition" />
         <activity android:name=".main.tasks.TaskDetailsActivity" />
         <activity
-            android:name=".main.MessagesActivity"
+            android:name=".main.messages.MessagesActivity"
             android:theme="@style/AppTheme_NoTransition" />
         <activity
             android:name=".main.tasks.TasksActivity"
@@ -31,10 +32,10 @@
         <activity android:name=".signup.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".main.messages.MessagingService" android:exported="false" />
     </application>
 
 </manifest>

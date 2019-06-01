@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -182,12 +183,36 @@ public class TaskDetailsActivity extends AppCompatActivity {
             return;
         }
 
+        taskNameView.setError(null);
+        taskPointsView.setError(null);
+
+        String nameStr = taskNameView.getText().toString();
+        String pointsStr = taskPointsView.getText().toString();
+
+        if (TextUtils.isEmpty(nameStr)) {
+            taskNameView.setError("This field is required");
+            taskNameView.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(pointsStr)) {
+            taskPointsView.setError("This field is required");
+            taskPointsView.requestFocus();
+            return;
+        }
+
+        if (!Utils.canParseLong(pointsStr)) {
+            taskPointsView.setError("This field is invalid");
+            taskPointsView.requestFocus();
+            return;
+        }
+
         showProgress(true);
 
         final Map<String, Object> taskMap = new HashMap<>();
 
-        final String name = taskNameView.getText().toString();
-        final long points = Long.parseLong(taskPointsView.getText().toString());
+        final String name = nameStr;
+        final long points = Long.parseLong(pointsStr);
         final TaskUserAdapter.TaskUser assignedUser = DataHolder.getInstance()
                 .getUsersInGroup()
                 .get(assignToIndex);
@@ -283,6 +308,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     }
 
     public void onFailure() {
+        showProgress(false);
         Toast.makeText(TaskDetailsActivity.this, "Server error", Toast.LENGTH_SHORT).show();
     }
 
