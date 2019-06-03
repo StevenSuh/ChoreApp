@@ -126,20 +126,10 @@ public class GroupsActivity extends AppCompatActivity {
             return;
         }
 
-        Group group = DataHolder.getInstance().getGroup();
-        GroupItemAdapter.GroupItem groupItem = new GroupItemAdapter.GroupItem(group.name,
-                group.users,
-                group.tasks,
-                group.activities,
-                group.messages,
-                group.groupRef);
-
         if (requestCode == GROUP_DETAIL) {
             if (resultCode == RESULT_DELETE) {
+                GroupItemAdapter.GroupItem groupItem = DataHolder.getInstance().getCurrentDetailGroup();
                 groupItemAdapter.deleteItem(groupItem);
-
-                GroupItemAdapter.GroupItem defaultGroup = groupItemAdapter.mDataset.get(0);
-                DataHolder.getInstance().setGroup(defaultGroup.groupRef, getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE));
 
                 if (groupItemAdapter.getItemCount() == 0) {
                     groupsList.animate()
@@ -166,6 +156,14 @@ public class GroupsActivity extends AppCompatActivity {
             groupItemAdapter.notifyDataSetChanged();
         }
         if (requestCode == GROUP_ADD) {
+            Group group = DataHolder.getInstance().getGroup();
+            GroupItemAdapter.GroupItem groupItem = new GroupItemAdapter.GroupItem(group.name,
+                    group.users,
+                    group.tasks,
+                    group.activities,
+                    group.messages,
+                    group.groupRef);
+
             groupItemAdapter.addItem(groupItem);
             groupsList.animate()
                     .setDuration(200)

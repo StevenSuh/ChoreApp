@@ -43,16 +43,19 @@ public class GroupItemAdapter extends RecyclerView.Adapter<GroupItemAdapter.Grou
     }
 
     public void deleteItem(GroupItem item) {
-        int currIndex = 0;
+        int index = -1;
 
-        for (GroupItem groupItem : mDataset) {
+        for (int i = 0; i < mDataset.size(); i++) {
+            GroupItem groupItem = mDataset.get(i);
             if (groupItem.groupRef.getId().equals(item.groupRef.getId())) {
+                index = i;
                 break;
             }
-            currIndex++;
         }
 
-        mDataset.remove(currIndex);
+        if (index != -1) {
+            mDataset.remove(index);
+        }
         this.notifyDataSetChanged();
     }
 
