@@ -135,7 +135,7 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
         final ProgressBar checkProgress = holder.view.findViewById(R.id.task_done_progress);
         View userColor = holder.view.findViewById(R.id.task_user_color);
         TextView taskNameView = holder.view.findViewById(R.id.task_name);
-        ImageView taskArrow = holder.view.findViewById(R.id.task_arrow);
+        View taskArrow = holder.view.findViewById(R.id.task_item_wrapper);
 
         checkIcon.setAlpha(task.is_done ? 1f : defs.EXTRA_LOW_OPACITY);
         taskNameView.setText(task.name);
@@ -148,7 +148,6 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
             userColor.setVisibility(View.GONE);
         }
 
-        Utils.setTouchEffect(checkIcon, task.is_done, true, true);
         checkIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,18 +175,17 @@ public class TaskItemAdapter extends RecyclerView.Adapter<TaskItemAdapter.TaskVi
             if (task.activity != null) {
                 task.activity.delete();
             }
-            task.taskRef.update(Task.IS_DONE, task.is_done);
-
             task.is_done = false;
+            task.taskRef.update(Task.IS_DONE, false);
             checkIcon.setAlpha(defs.EXTRA_LOW_OPACITY);
             return;
         }
 
         showProgress(true, checkIcon, checkProgress);
         task.isUpdating = true;
+        task.taskRef.update(Task.IS_DONE, true);
 
         Activity activity = new Activity(task.name, task.assigned_user, task.points, new Date(), task.group);
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Activity.COLLECTION)
             .add(activity.toMap())

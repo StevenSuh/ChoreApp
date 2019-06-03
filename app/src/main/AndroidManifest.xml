@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustNothing">
-        <activity android:name=".main.groups.GroupDetailsActivity"></activity>
+        <activity android:name=".main.groups.GroupDetailsActivity"
+            android:theme="@style/AppTheme_NoTransition" />
         <activity android:name=".signup.InviteActivity" />
         <activity
             android:name=".main.AccountActivity"

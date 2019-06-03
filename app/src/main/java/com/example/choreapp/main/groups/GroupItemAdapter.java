@@ -66,13 +66,14 @@ public class GroupItemAdapter extends RecyclerView.Adapter<GroupItemAdapter.Grou
 
     @Override
     public void onBindViewHolder(GroupViewHolder holder, int position) {
-        GroupItem group = this.mDataset.get(position);
+        final GroupItem group = this.mDataset.get(position);
         Group currGroup = DataHolder.getInstance().getGroup();
 
         Utils.setTouchEffect(holder.view, true, false, true);
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DataHolder.getInstance().setCurrentDetailGroup(group);
                 Intent intent = new Intent(context, GroupDetailsActivity.class);
                 ((GroupsActivity) context).startActivityForResult(intent, GroupsActivity.GROUP_DETAIL);
             }
@@ -84,6 +85,8 @@ public class GroupItemAdapter extends RecyclerView.Adapter<GroupItemAdapter.Grou
 
         if (group.groupRef.getId().equals(currGroup.groupRef.getId())) {
             groupSelected.setVisibility(View.VISIBLE);
+        } else {
+            groupSelected.setVisibility(View.INVISIBLE);
         }
 
         String members = group.users.size() + " Members";

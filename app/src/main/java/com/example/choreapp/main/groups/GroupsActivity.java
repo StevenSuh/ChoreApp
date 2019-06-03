@@ -122,6 +122,7 @@ public class GroupsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_CANCELED) {
+            groupItemAdapter.notifyDataSetChanged();
             return;
         }
 
@@ -161,9 +162,8 @@ public class GroupsActivity extends AppCompatActivity {
                                 }
                             });
                 }
-            } else {
-                groupItemAdapter.notifyDataSetChanged();
             }
+            groupItemAdapter.notifyDataSetChanged();
         }
         if (requestCode == GROUP_ADD) {
             groupItemAdapter.addItem(groupItem);

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.choreapp.DataHolder;
@@ -38,6 +39,7 @@ public class MessagingService extends Service {
 
     private static boolean isOnMessagePage = false;
     private static MessageItemAdapter messageList = null;
+    private static RecyclerView listView = null;
     private static ListenerRegistration currListener = null;
 
     private static MessagingService instance = null;
@@ -45,8 +47,9 @@ public class MessagingService extends Service {
         return instance;
     }
 
-    public static void setIsOnMessagePage(boolean value, MessageItemAdapter messageItemAdapter) {
+    public static void setIsOnMessagePage(boolean value, RecyclerView listView, MessageItemAdapter messageItemAdapter) {
         isOnMessagePage = value;
+        listView = listView;
         messageList = messageItemAdapter;
     }
 
@@ -93,7 +96,7 @@ public class MessagingService extends Service {
     }
 
     private static void addMessageToList(final QueryDocumentSnapshot snapshot) {
-        if (messageList == null) {
+        if (messageList == null || listView == null) {
             return;
         }
 
@@ -130,6 +133,7 @@ public class MessagingService extends Service {
                                 userColor,
                                 snapshot.getReference());
                         messageList.addItem(message);
+                        listView.scrollToPosition(messageList.getItemCount() - 1);
                     }
                 });
     }
@@ -160,7 +164,7 @@ public class MessagingService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        String channelId = "Message";
+        String channelId = "ChoreApp_Message_Notification";
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.app_logo_transp)

@@ -32,41 +32,49 @@
 
     </RelativeLayout>
 
-    <View
-        android:id="@+id/task_user_color"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_gravity="center_vertical"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/task_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="1dp"
-        android:fontFamily="@font/circular_pro_medium"
-        android:textColor="@color/colorBlackLight"
-        android:textSize="18sp" />
-
     <LinearLayout
+        android:id="@+id/task_item_wrapper"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:id="@+id/task_user_color"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/task_arrow"
+        <TextView
+            android:id="@+id/task_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_chevron_left" />
+            android:layout_marginBottom="1dp"
+            android:fontFamily="@font/circular_pro_medium"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/task_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_chevron_left" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

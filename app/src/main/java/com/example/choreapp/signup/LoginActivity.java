@@ -40,6 +40,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 public class LoginActivity extends AppCompatActivity {
 
     private boolean isSigningin = false;
@@ -205,6 +207,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (userQuery.get(User.COLOR) == null) {
                         startCreateProfile(user.getDisplayName());
+                        return;
+                    }
+
+                    ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) userQuery.get(User.GROUPS);
+                    if (groups == null || groups.isEmpty()) {
+                        Intent intent = new Intent(LoginActivity.this, CreateGroupActivity.class);
+                        startActivity(intent);
                         return;
                     }
 

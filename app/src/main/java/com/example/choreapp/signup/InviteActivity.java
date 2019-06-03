@@ -36,7 +36,7 @@ public class InviteActivity extends AppCompatActivity {
         });
 
         LinearLayout messageInviteButton = findViewById(R.id.message_invite);
-        Utils.setTouchEffect(messageInviteButton, true, false, false);
+        Utils.setTouchEffect(messageInviteButton, true, false, true);
         messageInviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +45,7 @@ public class InviteActivity extends AppCompatActivity {
         });
 
         LinearLayout codeInviteButton = findViewById(R.id.code_invite);
-        Utils.setTouchEffect(codeInviteButton, true, false, false);
+        Utils.setTouchEffect(codeInviteButton, true, false, true);
         codeInviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +54,7 @@ public class InviteActivity extends AppCompatActivity {
         });
 
         LinearLayout otherInviteButton = findViewById(R.id.other_invite);
-        Utils.setTouchEffect(otherInviteButton, true, false, false);
+        Utils.setTouchEffect(otherInviteButton, true, false, true);
         otherInviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +74,7 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     private void onClickMessage() {
-        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
         sendIntent.putExtra("sms_body", "Join my group at ChoreApp! Code: " + group_code);
         sendIntent.setType("vnd.android-dir/mms-sms");
         startActivity(sendIntent);
@@ -82,7 +82,7 @@ public class InviteActivity extends AppCompatActivity {
 
     private void onClickCode() {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("", "Join my group at ChoreApp! Code: " + group_code);
+        ClipData clip = ClipData.newPlainText("", group_code);
         clipboard.setPrimaryClip(clip);
         Toast.makeText(this, "Code copied", Toast.LENGTH_SHORT).show();
     }

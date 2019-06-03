@@ -112,14 +112,14 @@ public class MessagesActivity extends AppCompatActivity {
         messagesWrapper = findViewById(R.id.messages_wrapper);
         progressBar = findViewById(R.id.progress);
 
-        MessagingService.setIsOnMessagePage(true, messageItemAdapter);
+        MessagingService.setIsOnMessagePage(true, listView, messageItemAdapter);
         loadMessages();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MessagingService.setIsOnMessagePage(false, null);
+        MessagingService.setIsOnMessagePage(false, null, null);
     }
 
     private void toggleIsAnon() {

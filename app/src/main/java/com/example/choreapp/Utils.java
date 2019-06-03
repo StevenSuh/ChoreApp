@@ -92,13 +92,15 @@ public class Utils {
 
                         if (TextUtils.isEmpty(groupId)) {
                             ArrayList<DocumentReference> groups = (ArrayList<DocumentReference>) user.get(User.GROUPS);
-                            DocumentReference group = groups.get(0);
 
-                            if (group == null) {
+                            System.out.println(groups);
+
+                            if (groups == null || groups.isEmpty()) {
                                 nukePrefs(context);
                                 return;
                             }
 
+                            DocumentReference group = groups.get(0);
                             getGroupData(group.getId(), context, prefs, callback);
                             return;
                         }
@@ -112,13 +114,13 @@ public class Utils {
             init.run();
             if (TextUtils.isEmpty(groupId)) {
                 User user = DataHolder.getInstance().getUser();
-                DocumentReference group = user.groups.get(0);
 
-                if (group == null) {
+                if (user.groups == null || user.groups.isEmpty()) {
                     nukePrefs(context);
                     return;
                 }
 
+                DocumentReference group = user.groups.get(0);
                 getGroupData(group.getId(), context, prefs, callback);
                 return;
             }
@@ -141,6 +143,7 @@ public class Utils {
                             Toast.makeText(context, "Server error", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
                         DataHolder.getInstance().setGroup(task.getResult(), prefs);
                         callback.run();
                     }

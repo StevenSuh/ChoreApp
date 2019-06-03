@@ -190,6 +190,10 @@ public class CreateGroupActivity extends AppCompatActivity {
                     }
                     showProgress(false);
 
+                    getSharedPreferences(defs.SHARED_PREF, MODE_PRIVATE)
+                            .edit()
+                            .putBoolean(defs.IS_LOGGED_IN, true)
+                            .apply();
                     Intent intent = new Intent(CreateGroupActivity.this, InviteActivity.class);
                     intent.putExtra(defs.INVITE_CODE, group.getId());
                     startActivity(intent);

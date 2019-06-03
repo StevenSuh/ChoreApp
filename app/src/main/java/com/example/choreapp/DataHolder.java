@@ -3,6 +3,7 @@ package com.example.choreapp;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+import com.example.choreapp.main.groups.GroupItemAdapter;
 import com.example.choreapp.main.tasks.TaskItemAdapter;
 import com.example.choreapp.main.tasks.TaskUserAdapter;
 import com.example.choreapp.models.Group;
@@ -20,6 +21,7 @@ public class DataHolder {
     private User user = null;
     private Group currentGroup = null;
 
+    private GroupItemAdapter.GroupItem currDetailGroup = null;
     private TaskItemAdapter.TaskItem selectedTask = null;
     private ArrayList<TaskUserAdapter.TaskUser> usersInGroup = null;
 
@@ -37,6 +39,14 @@ public class DataHolder {
 
     public ArrayList<TaskUserAdapter.TaskUser> getUsersInGroup() {
         return usersInGroup;
+    }
+
+    public GroupItemAdapter.GroupItem getCurrentDetailGroup() {
+        return currDetailGroup;
+    }
+
+    public void setCurrentDetailGroup(GroupItemAdapter.GroupItem group) {
+        this.currDetailGroup = group;
     }
 
     public void setUser(DocumentReference user, final SharedPreferences prefs) {

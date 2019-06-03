@@ -71,10 +71,8 @@ public class MessageItemAdapter extends RecyclerView.Adapter<MessageItemAdapter.
 
         boolean isYou = message.user.getId().equals(currUser.userRef.getId());
 
-        if (isYou) {
-            LinearLayout view = (LinearLayout) holder.view;
-            view.setGravity(Gravity.END);
-        }
+        LinearLayout view = (LinearLayout) holder.view;
+        view.setGravity(isYou ? Gravity.END : Gravity.START);
 
         final TextView textTimestamp = holder.view.findViewById(R.id.text_timestamp);
         View userColor = holder.view.findViewById(R.id.message_user_color);
